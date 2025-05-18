@@ -34,16 +34,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  CheckCircle2Icon,
+  // CheckCircle2Icon,
   ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
+  // ChevronLeftIcon,
+  // ChevronRightIcon,
+  // ChevronsLeftIcon,
+  // ChevronsRightIcon,
   ColumnsIcon,
-  GripVerticalIcon,
-  LoaderIcon,
-  MoreVerticalIcon,
+  // GripVerticalIcon,
+  // LoaderIcon,
+  // MoreVerticalIcon,
   PlusIcon,
   TrendingUpIcon,
 } from "lucide-react";
@@ -65,8 +65,8 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
+  // DropdownMenuItem,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -110,31 +110,31 @@ export const schema = z.object({
 });
 
 // Create a separate component for the drag handle
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
+// function DragHandle({ id }: { id: number }) {
+//   const { attributes, listeners } = useSortable({
+//     id,
+//   });
 
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="size-7 text-muted-foreground hover:bg-transparent"
-    >
-      <GripVerticalIcon className="size-3 text-muted-foreground" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  );
-}
+//   return (
+//     <Button
+//       {...attributes}
+//       {...listeners}
+//       variant="ghost"
+//       size="icon"
+//       className="size-7 text-muted-foreground hover:bg-transparent"
+//     >
+//       <GripVerticalIcon className="size-3 text-muted-foreground" />
+//       <span className="sr-only">Drag to reorder</span>
+//     </Button>
+//   );
+// }
 
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
-  {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
-  },
+  // {
+  //   id: "drag",
+  //   header: () => null,
+  //   cell: ({ row }) => <DragHandle id={row.original.id} />,
+  // },
   {
     id: "select",
     header: ({ table }) => (
@@ -163,7 +163,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "header",
-    header: "Header",
+    header: "Article Title",
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />;
     },
@@ -171,35 +171,13 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "type",
-    header: "Section Type",
-    cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="px-1.5 text-muted-foreground">
-          {row.original.type}
-        </Badge>
-      </div>
-    ),
+    header: "Keywords [Traffic]",
+    cell: ({ row }) => <div className="w-auto">{row.original.type}</div>,
   },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
-      >
-        {row.original.status === "Done" ? (
-          <CheckCircle2Icon className="text-green-500 dark:text-green-400" />
-        ) : (
-          <LoaderIcon />
-        )}
-        {row.original.status}
-      </Badge>
-    ),
-  },
+
   {
     accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    header: () => <div className="w-full text-right">Words</div>,
     cell: ({ row }) => (
       <form
         onSubmit={(e) => {
@@ -212,7 +190,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         }}
       >
         <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
+          Words
         </Label>
         <Input
           className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
@@ -224,86 +202,101 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
+    header: () => <div className="w-full text-right">Created On</div>,
+    cell: ({ row }) => {
+      return <div className="w-auto text-center">{row.original.limit}</div>;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Action",
     cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          });
-        }}
+      <Badge
+        variant="outline"
+        className="flex gap-1 px-8 py-2 text-muted-foreground [&_svg]:size-3 border border-green-600 text-green-600"
       >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
+        {row.original.status}
+      </Badge>
     ),
   },
   {
     accessorKey: "reviewer",
-    header: "Reviewer",
-    cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer";
-
-      if (isAssigned) {
-        return row.original.reviewer;
-      }
-
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="h-8 w-40"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-              <SelectItem value="Jamik Tashpulatov">
-                Jamik Tashpulatov
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </>
-      );
-    },
-  },
-  {
-    id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-            size="icon"
-          >
-            <MoreVerticalIcon />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    header: "Publish",
+    cell: ({ row }) => (
+      // <Badge
+      //   variant="outline"
+      //   className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
+      // >
+      // </Badge>
+      <div className="flex justify-center">
+        <img
+          src="https://png.pngtree.com/png-clipart/20200727/original/pngtree-letter-w-logo-png-image_5287203.jpg"
+          alt=""
+          className="w-10 rounded-full"
+        />
+        <Button variant="ghost" size="icon">
+          <ChevronDownIcon />
+        </Button>
+      </div>
     ),
   },
+  // {
+  //   accessorKey: "reviewer",
+  //   header: "Reviewer",
+  //   cell: ({ row }) => {
+  //     const isAssigned = row.original.reviewer !== "Assign reviewer";
+
+  //     if (isAssigned) {
+  //       return row.original.reviewer;
+  //     }
+
+  //     return (
+  //       <>
+  //         <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
+  //           Reviewer
+  //         </Label>
+  //         <Select>
+  //           <SelectTrigger
+  //             className="h-8 w-40"
+  //             id={`${row.original.id}-reviewer`}
+  //           >
+  //             <SelectValue placeholder="Assign reviewer" />
+  //           </SelectTrigger>
+  //           <SelectContent align="end">
+  //             <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
+  //             <SelectItem value="Jamik Tashpulatov">
+  //               Jamik Tashpulatov
+  //             </SelectItem>
+  //           </SelectContent>
+  //         </Select>
+  //       </>
+  //     );
+  //   },
+  // },
+  // {
+  //   id: "actions",
+  //   cell: () => (
+  //     <DropdownMenu>
+  //       <DropdownMenuTrigger asChild>
+  //         <Button
+  //           variant="ghost"
+  //           className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+  //           size="icon"
+  //         >
+  //           <MoreVerticalIcon />
+  //           <span className="sr-only">Open menu</span>
+  //         </Button>
+  //       </DropdownMenuTrigger>
+  //       <DropdownMenuContent align="end" className="w-32">
+  //         <DropdownMenuItem>Edit</DropdownMenuItem>
+  //         <DropdownMenuItem>Make a copy</DropdownMenuItem>
+  //         <DropdownMenuItem>Favorite</DropdownMenuItem>
+  //         <DropdownMenuSeparator />
+  //         <DropdownMenuItem>Delete</DropdownMenuItem>
+  //       </DropdownMenuContent>
+  //     </DropdownMenu>
+  //   ),
+  // },
 ];
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
@@ -499,7 +492,11 @@ export function DataTable({
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                       return (
-                        <TableHead key={header.id} colSpan={header.colSpan}>
+                        <TableHead
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className="font-bold text-black"
+                        >
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -537,14 +534,15 @@ export function DataTable({
           </DndContext>
         </div>
         <div className="flex items-center justify-between px-4">
-          <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+          <div className="hidden flex-1 text-base text-muted-foreground lg:flex text-black">
+            Total{" "}
+            {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
+            {table.getFilteredRowModel().rows.length} Article Titles.
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
               <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                Rows per page
+                Show
               </Label>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
@@ -565,51 +563,13 @@ export function DataTable({
                   ))}
                 </SelectContent>
               </Select>
+              <Label htmlFor="rows-per-page" className="text-sm font-medium">
+                entries per page
+              </Label>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              Page {table.getState().pagination.pageIndex + 1} {" / "}
               {table.getPageCount()}
-            </div>
-            <div className="ml-auto flex items-center gap-2 lg:ml-0">
-              <Button
-                variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="hidden size-8 lg:flex"
-                size="icon"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon />
-              </Button>
             </div>
           </div>
         </div>
