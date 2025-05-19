@@ -1,4 +1,6 @@
 import * as React from "react";
+import icon from "../assets/assets";
+
 import {
   DndContext,
   KeyboardSensor,
@@ -33,20 +35,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  // CheckCircle2Icon,
-  ChevronDownIcon,
-  // ChevronLeftIcon,
-  // ChevronRightIcon,
-  // ChevronsLeftIcon,
-  // ChevronsRightIcon,
-  ColumnsIcon,
-  // GripVerticalIcon,
-  // LoaderIcon,
-  // MoreVerticalIcon,
-  PlusIcon,
-  TrendingUpIcon,
-} from "lucide-react";
+import { ChevronDownIcon, MessageCircle, TrendingUpIcon } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -61,14 +50,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  // DropdownMenuItem,
-  // DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -97,7 +78,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export const schema = z.object({
   id: z.number(),
@@ -109,32 +90,7 @@ export const schema = z.object({
   reviewer: z.string(),
 });
 
-// Create a separate component for the drag handle
-// function DragHandle({ id }: { id: number }) {
-//   const { attributes, listeners } = useSortable({
-//     id,
-//   });
-
-//   return (
-//     <Button
-//       {...attributes}
-//       {...listeners}
-//       variant="ghost"
-//       size="icon"
-//       className="size-7 text-muted-foreground hover:bg-transparent"
-//     >
-//       <GripVerticalIcon className="size-3 text-muted-foreground" />
-//       <span className="sr-only">Drag to reorder</span>
-//     </Button>
-//   );
-// }
-
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
-  // {
-  //   id: "drag",
-  //   header: () => null,
-  //   cell: ({ row }) => <DragHandle id={row.original.id} />,
-  // },
   {
     id: "select",
     header: ({ table }) => (
@@ -222,81 +178,15 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     accessorKey: "reviewer",
     header: "Publish",
-    cell: ({ row }) => (
-      // <Badge
-      //   variant="outline"
-      //   className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
-      // >
-      // </Badge>
+    cell: ({}) => (
       <div className="flex justify-center">
-        <img
-          src="https://png.pngtree.com/png-clipart/20200727/original/pngtree-letter-w-logo-png-image_5287203.jpg"
-          alt=""
-          className="w-10 rounded-full"
-        />
+        <img src={icon} alt="" className="w-10 rounded-full" />
         <Button variant="ghost" size="icon">
           <ChevronDownIcon />
         </Button>
       </div>
     ),
   },
-  // {
-  //   accessorKey: "reviewer",
-  //   header: "Reviewer",
-  //   cell: ({ row }) => {
-  //     const isAssigned = row.original.reviewer !== "Assign reviewer";
-
-  //     if (isAssigned) {
-  //       return row.original.reviewer;
-  //     }
-
-  //     return (
-  //       <>
-  //         <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-  //           Reviewer
-  //         </Label>
-  //         <Select>
-  //           <SelectTrigger
-  //             className="h-8 w-40"
-  //             id={`${row.original.id}-reviewer`}
-  //           >
-  //             <SelectValue placeholder="Assign reviewer" />
-  //           </SelectTrigger>
-  //           <SelectContent align="end">
-  //             <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-  //             <SelectItem value="Jamik Tashpulatov">
-  //               Jamik Tashpulatov
-  //             </SelectItem>
-  //           </SelectContent>
-  //         </Select>
-  //       </>
-  //     );
-  //   },
-  // },
-  // {
-  //   id: "actions",
-  //   cell: () => (
-  //     <DropdownMenu>
-  //       <DropdownMenuTrigger asChild>
-  //         <Button
-  //           variant="ghost"
-  //           className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-  //           size="icon"
-  //         >
-  //           <MoreVerticalIcon />
-  //           <span className="sr-only">Open menu</span>
-  //         </Button>
-  //       </DropdownMenuTrigger>
-  //       <DropdownMenuContent align="end" className="w-32">
-  //         <DropdownMenuItem>Edit</DropdownMenuItem>
-  //         <DropdownMenuItem>Make a copy</DropdownMenuItem>
-  //         <DropdownMenuItem>Favorite</DropdownMenuItem>
-  //         <DropdownMenuSeparator />
-  //         <DropdownMenuItem>Delete</DropdownMenuItem>
-  //       </DropdownMenuContent>
-  //     </DropdownMenu>
-  //   ),
-  // },
 ];
 
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
@@ -394,85 +284,48 @@ export function DataTable({
       defaultValue="outline"
       className="flex w-full flex-col justify-start gap-6"
     >
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
-        <Select defaultValue="outline">
-          <SelectTrigger
-            className="@4xl/main:hidden flex w-fit"
-            id="view-selector"
-          >
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="outline">Outline</SelectItem>
-            <SelectItem value="past-performance">Past Performance</SelectItem>
-            <SelectItem value="key-personnel">Key Personnel</SelectItem>
-            <SelectItem value="focus-documents">Focus Documents</SelectItem>
-          </SelectContent>
-        </Select>
-        <TabsList className="@4xl/main:flex hidden">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance" className="gap-1">
-            Past Performance{" "}
-            <Badge
-              variant="secondary"
-              className="flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/30"
-            >
-              3
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel" className="gap-1">
-            Key Personnel{" "}
-            <Badge
-              variant="secondary"
-              className="flex h-5 w-5 items-center justify-center rounded-full bg-muted-foreground/30"
-            >
-              2
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-        </TabsList>
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <ColumnsIcon />
-                <span className="hidden lg:inline">Customize Columns</span>
-                <span className="lg:hidden">Columns</span>
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {table
-                .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <PlusIcon />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
+      {/* <div className="flex w-full flex-col items-center">
+        <div className=" flex items-center justify-center border rounded-lg ">
+          <span className="px-8 py-1 border border-l-1 border-r-2 border-y-0 rounded-lg hover:bg-blue-500 hover:text-white">
+            Generated Articles
+          </span>
+          <span className="px-8 py-1 border border-l-0 border-r-2 border-y-0 rounded-e-xl hover:bg-blue-500 hover:text-white">
+            Published Articles
+          </span>
+          <span className="px-8 py-1 border border-l-0 border-r-2 border-y-0 rounded-e-xl hover:bg-blue-500 hover:text-white">
+            Scheduled Articles
+          </span>
+          <span className="px-8 py-1 border border-l-0 border-r-0 border-y-0 hover:bg-blue-500 hover:text-white">
+            Archieved Articles
+          </span>
         </div>
+        <input
+          type="text"
+          className="w-[40%] m-6 border border-gray-500 rounded-md px-2 py-1"
+          placeholder="Search for Title & Keywords"
+        />
+      </div> */}
+      <div className="flex w-full flex-col items-center">
+        <div className="flex flex-col sm:flex-row items-center justify-center border rounded-lg">
+          <span className="px-8 py-1 border m-[1px] hover:bg-blue-500 hover:text-white rounded-lg">
+            Generated Articles
+          </span>
+          <span className="px-8 py-1 border m-[1px] hover:bg-blue-500 hover:text-white rounded-lg">
+            Published Articles
+          </span>
+          <span className="px-8 py-1 border m-[1px] hover:bg-blue-500 hover:text-white rounded-lg">
+            Scheduled Articles
+          </span>
+          <span className="px-8 py-1 border m-[1px] hover:bg-blue-500 hover:text-white rounded-lg">
+            Archieved Articles
+          </span>
+        </div>
+
+        <input
+          type="text"
+          className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%] m-6 border border-gray-500 rounded-md px-2 py-1"
+          placeholder="Search for Title & Keywords"
+        />
       </div>
       <TabsContent
         value="outline"
@@ -533,13 +386,11 @@ export function DataTable({
             </Table>
           </DndContext>
         </div>
-        <div className="flex items-center justify-between px-4">
+        <div className="flex items-center px-4">
           <div className="hidden flex-1 text-base text-muted-foreground lg:flex text-black">
-            Total{" "}
-            {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-            {table.getFilteredRowModel().rows.length} Article Titles.
+            Total {table.getFilteredRowModel().rows.length} Article Titles.
           </div>
-          <div className="flex w-full items-center gap-8 lg:w-fit">
+          <div className="flex justify-between w-full items-center gap-8 lg:w-[85%]">
             <div className="hidden items-center gap-2 lg:flex">
               <Label htmlFor="rows-per-page" className="text-sm font-medium">
                 Show
@@ -580,9 +431,18 @@ export function DataTable({
       >
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
+
       <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
       </TabsContent>
+
+      {/* chat icon */}
+      <div className="flex justify-end p-10">
+        <div className="p-4 border bg-sky-600 rounded-full">
+          <MessageCircle />
+        </div>
+      </div>
+
       <TabsContent
         value="focus-documents"
         className="flex flex-col px-4 lg:px-6"

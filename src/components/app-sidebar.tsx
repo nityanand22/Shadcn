@@ -1,16 +1,17 @@
 import * as React from "react";
 import {
+  DollarSignIcon,
+  Star,
   AudioWaveform,
-  // BookOpen,
-  // Bot,
   Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  // PieChart,
-  // Settings2,
-  SquareTerminal,
   Cable,
+  Info,
+  BellRing,
+  MessageCircle,
+  Link,
+  NewspaperIcon,
+  ScrollTextIcon,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -22,7 +23,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  // SidebarRail,
 } from "@/components/ui/sidebar";
 
 // This is sample data.
@@ -53,7 +53,7 @@ const data = {
     {
       title: "Article",
       url: "#",
-      icon: SquareTerminal,
+      icon: ScrollTextIcon,
       isActive: true,
       items: [
         {
@@ -168,7 +168,7 @@ const data = {
     {
       name: "Auto Blog",
       url: "#",
-      icon: Frame,
+      icon: NewspaperIcon,
     },
     {
       name: "Internal Links",
@@ -178,7 +178,7 @@ const data = {
     {
       name: "Free Backlinks",
       url: "#",
-      icon: Map,
+      icon: Link,
     },
     {
       name: "Integrations",
@@ -188,27 +188,27 @@ const data = {
     {
       name: "Subscriptions",
       url: "#",
-      icon: Map,
+      icon: Star,
     },
     {
       name: "Affiliate Program",
       url: "#",
-      icon: Map,
+      icon: DollarSignIcon,
     },
     {
       name: "Help Center",
       url: "#",
-      icon: Map,
+      icon: Info,
     },
     {
       name: "Updates",
       url: "#",
-      icon: Map,
+      icon: BellRing,
     },
     {
       name: "Live Chat Support",
       url: "#",
-      icon: Map,
+      icon: MessageCircle,
     },
   ],
 };
