@@ -1,3 +1,11 @@
+## Recent Updates
+
+- Updated the **TeamSwitcher** component to replace the previous SidebarMenuButton with a custom div containing a heading and email with an icon.
+- Implemented sidebar collapse behavior for the TeamSwitcher component, ensuring the heading and email section smoothly collapses and expands along with the sidebar.
+- Used the sidebar's collapse state (`isCollapsed`) to conditionally hide/show the TeamSwitcher content with smooth transitions.
+- Improved sidebar layout to prevent overlapping issues when expanding or collapsing the sidebar.
+- Ensured the sidebar content adjusts dynamically to the sidebar's state, maintaining a clean and user-friendly UI.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -24,31 +32,31 @@ export default tseslint.config({
   languageOptions: {
     // other options...
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default tseslint.config({
   plugins: {
     // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
+    "react-x": reactX,
+    "react-dom": reactDom,
   },
   rules: {
     // other rules...
     // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
+    ...reactX.configs["recommended-typescript"].rules,
     ...reactDom.configs.recommended.rules,
   },
-})
+});
 ```
